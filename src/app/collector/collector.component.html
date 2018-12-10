@@ -1,0 +1,83 @@
+<div id="editor-box" (keyup.n)="newAgentArrivalFunction()" (keyup.k)="endOfAgentDelayFunction()">
+  <div id="buttons">
+    <button
+      class="btn-default btn-lg"
+      (click)="newAgentArrivalFunction()">
+      Novy zakaznik
+    </button>
+
+    <button
+      class="btn-default btn-lg"
+      (click)="endOfAgentDelayFunction()">
+      Koniec obsluhy
+    </button>
+
+    <button
+      class="btn-info btn-sm"
+      (click)="reset()"
+      title="Reset aplikacie">
+      <i class="fas fa-redo-alt"></i>
+    </button>
+
+    <button
+      class="btn-danger btn-sm"
+      title="Vymazanie vsetkych udajov z databazy">
+      <i class="fas fa-skull-crossbones"></i>
+    </button>
+  </div>
+
+  <div id="stats-box">
+    <table class="table table-striped">
+      <tr>
+        <td>Cas od zaciatku:</td>
+        <td>{{elapsedTimeLabel}}</td>
+        <td>Pocet zakaznikov:</td>
+        <td>{{allAgents.length()}}</td>
+        <td>Priemerny cas obsluhy:</td>
+        <td>{{allAgents.avgDelayTime() / 1000 | number}}</td>
+        <td>Min cas obsluhy:</td>
+        <td>{{allAgents.minDelayTime() / 1000 | number}}</td>
+      </tr>
+
+      <tr>
+        <td>Max dlzka frontu:</td>
+        <td>{{-1}}</td>
+        <td>Priemerny cas cakania:</td>
+        <td>{{allAgents.avgWaitingTime() / 1000 | number}}</td>
+        <td>Max cas cakania:</td>
+        <td>{{allAgents.maxWaitingTime() / 1000 | number}}</td>
+        <td>Max cas obsluhy:</td>
+        <td>{{allAgents.maxDelayTime() / 1000 | number}}</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- FRONT -->
+  <div id="customers-front">
+    <div *ngFor="let c of agentsQueue; index as i" class="customer-box">
+      <span class="font-3em">{{i + 1}}</span><br/> No: {{c.agentId}}
+    </div>
+  </div>
+
+  <!-- Poslednych 5 zaznamov
+  <div id="recent-arrivals" [hidden]="arrivals.size() === 0">
+    <table class="table">
+      <thead>
+      <tr>
+        <th>ID</th>
+        <th>SYSTEM TIME [s]</th>
+        <th>UTC TIME</th>
+      </tr>
+      </thead>
+
+      <tbody>
+      <tr *ngFor="let arrival of arrivals.lastN(5); index as i">
+        <td>{{i + 1}}</td>
+        <td>{{arrival / 1000 | number}}</td>
+        <td>--</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>-->
+
+</div>

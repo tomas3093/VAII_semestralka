@@ -1,0 +1,31 @@
+#editor-box {
+  padding: 15px;
+}
+
+#buttons button {
+  margin-right: 20px;
+}
+
+#stats-box {
+  margin: 15px 0;
+}
+
+.customer-box {
+  background-color: #545456;
+  color: white;
+  padding: 15px;
+  margin: 5px;
+}
+
+#customers-front div:first-of-type {
+  background-color: #00ff00;
+  color: black;
+}
+
+.font-3em {
+  font-size: 3em;
+}
+
+#customers-front {
+  display: flex;
+}
