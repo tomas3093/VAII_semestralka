@@ -1,11 +1,13 @@
 ﻿import { Routes, RouterModule } from '@angular/router';
 
-import { DashboardComponent } from './dashboard';
-import { LoginComponent } from './login';
-import { RegisterComponent } from './register';
+import { DashboardComponent } from './_components/_core/dashboard';
+import { LoginComponent } from './_components/_user/login';
+import { RegisterComponent } from './_components/_user/register';
 import { AuthGuard } from './_guards';
-import {UserManagerComponent} from "./user-manager";
-import {CollectorComponent} from "./collector/collector.component";
+import {CollectorComponent} from "./_components/_core/collector/collector.component";
+import {ProfileEditorComponent} from "./_components/_user/profile-editor/profile-editor.component";
+import {PswdChangerComponent} from "./_components/_user/pswd-changer/pswd-changer.component";
+import {AccountDeleterComponent} from "./_components/_user/account-deleter/account-deleter.component";
 
 const appRoutes: Routes = [
     { path: '', component: DashboardComponent, canActivate: [AuthGuard] },
@@ -13,9 +15,11 @@ const appRoutes: Routes = [
     { path: 'measurement', component: CollectorComponent, canActivate: [AuthGuard] },
 
     // User stuff
-    { path: 'user-manager', component: UserManagerComponent, canActivate: [AuthGuard] },
     { path: 'login', component: LoginComponent },
     { path: 'register', component: RegisterComponent },
+    { path: 'edit-profile', component: ProfileEditorComponent },
+    { path: 'change-password', component: PswdChangerComponent },
+    { path: 'delete-account', component: AccountDeleterComponent },
 
     // otherwise redirect to /
     { path: '**', redirectTo: '' }

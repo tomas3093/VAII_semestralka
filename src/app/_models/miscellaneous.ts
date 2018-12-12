@@ -1,9 +1,6 @@
 import {Agent} from "./agent";
 
 export class Constants {
-  public static readonly USER_ROLE_ADMIN: number = 0;
-  public static readonly USER_ROLE_MODERATOR: number = 1;
-  public static readonly USER_ROLE_USER: number = 2;
 
   // 30 minutes TTL
   public static readonly USER_LOGIN_DEFAULT_TTL = 60 * 30;
@@ -99,6 +96,7 @@ export class AgentStatistics {
 export class LoginResponse {
   id: string;
   ttl: number;
+  scopes: string;
   created: string;
   userId: number;
 }

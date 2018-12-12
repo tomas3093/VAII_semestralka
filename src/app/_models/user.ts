@@ -1,6 +1,4 @@
-﻿import {Constants} from "./miscellaneous";
-
-export class User {
+﻿export class User {
     id: number;
     realm: string;
     username: string;
@@ -8,12 +6,4 @@ export class User {
     email: string;
     emailVerified: boolean;
     verificationToken: string;
-
-    // Custom attributes
-    role: number;
-
-
-    isAdmin(): boolean {
-      return this.role === Constants.USER_ROLE_ADMIN;
-    }
 }

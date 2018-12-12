@@ -6,7 +6,7 @@ Semestralna praca - predmet Modelovanie a Simulacia
 
 ---
 
-## Features:
+##Features:
   * vizualizacia frontu agentov (moznost zvolit si typ zobrazenia)
 	* moznost zvolit si pocet services (front + obsluha)
 	* tlacidlo na generovanie .csv files
@@ -27,3 +27,5 @@ priecinky zacinajuce _ su shared code, ostatne je feature specific code
   * Dorobit autentifikaciu s query do db ci existuje dany token
   * Dorobit logout - nastavenie tokenu v db (TTL = 0)
 
+  * kuknut si remote method - pouzit ju na novu API metodu
+  * https://loopback.io/doc/en/lb3/Remote-methods.html

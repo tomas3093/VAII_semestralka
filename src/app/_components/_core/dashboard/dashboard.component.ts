@@ -1,5 +1,5 @@
 ﻿import { Component, OnInit } from '@angular/core';
-import {User, Constants, Measurement} from "../_models";
+import {User, Measurement} from "../../../_models";
 
 @Component({
   selector: 'app-dashboard',
@@ -17,7 +17,6 @@ export class DashboardComponent implements OnInit {
 
     this.currentUser = new User();
     this.currentUser.username = "Tom";
-    this.currentUser.role = Constants.USER_ROLE_ADMIN;
 
     let m = new Measurement();
     m.name = "My first measrmnt";

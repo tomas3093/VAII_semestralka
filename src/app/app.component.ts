@@ -5,4 +5,11 @@
     templateUrl: 'app.component.html'
 })
 
-export class AppComponent { }
+export class AppComponent {
+
+  currentYear: number;
+
+  constructor() {
+    this.currentYear = new Date().getFullYear();
+  }
+}

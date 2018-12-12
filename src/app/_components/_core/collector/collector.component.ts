@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {Agent, AgentStatistics, Measurement, QueueLengthListItem} from "../_models";
+import {Agent, AgentStatistics, Measurement, QueueLengthListItem} from "../../../_models";
 
 @Component({
   selector: 'app-collector',

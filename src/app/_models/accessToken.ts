@@ -1,5 +1,5 @@
 export class AccessToken {
-  id: number;
+  id: string;
   ttl: string;
   scopes: string[];
   created: Date;

@@ -1,9 +1,9 @@
 ﻿import { Injectable } from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 
 import { environment } from '../../environments/environment';
-import {Constants, LoginResponse} from "../_models";
+import { Constants, LoginResponse } from "../_models";
 
 @Injectable()
 export class AuthenticationService {
@@ -13,7 +13,7 @@ export class AuthenticationService {
    * Vykona sa post do DB tabulky CustomAccessToken a vytvori sa token aj v db aj v localStorage
    * @param {string} email
    * @param {string} password
-   * @returns {Observable<any>}
+   * @returns {Observable<LoginResponse>}
    */
     login(email: string, password: string) {
 
@@ -23,7 +23,7 @@ export class AuthenticationService {
         ttl: Constants.USER_LOGIN_DEFAULT_TTL
       };
 
-      return this.http.post<LoginResponse>(`${environment.apiUrl}/CustomUsers/login`, userCredentials)
+      return this.http.post<LoginResponse>(`${environment.apiUrl}/Users/login`, userCredentials)
             .pipe(map(res => {
                 // login successful if there's a jwt token in the response
                 if (res && res.id) {
@@ -35,12 +35,11 @@ export class AuthenticationService {
             }));
     }
 
-  /**
-   * Odhlasi usera, tak ze nastavi tokenu v db TTL na 0 a vymaze ho z localStorage
-   */
-  logout() {
 
-    // TODO
+  /**
+   * Odhlasi usera
+   */
+  static logout() {
     localStorage.removeItem('currentUser');
   }
 }
