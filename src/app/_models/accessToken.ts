@@ -1,9 +1,19 @@
+/**
+ * Pristupovy token pre login userov
+ */
 export class AccessToken {
+  // samotny token
   id: string;
-  ttl: string;
-  scopes: string[];
-  created: Date;
 
-  // FKs
+  // cas v sekundach kolko je token platny od vytvorenia
+  ttl: number;
+
+  //
+  scopes: string;
+
+  // datum vytvorenia tokenu
+  created: string;
+
+  // uzivatel ktoremu token patri (FK)
   userId: number;
 }

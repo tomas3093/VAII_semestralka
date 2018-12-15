@@ -1,30 +1,60 @@
 ﻿import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 
 import { environment } from '../../environments/environment';
 import {User} from '../_models';
+import {Observable} from "rxjs/index";
+import {MyLib} from "../_components/_core/MyLib";
 
 @Injectable()
 export class UserService {
     constructor(private http: HttpClient) { }
 
-    getAll() {
-        return this.http.get<User[]>(`${environment.apiUrl}/users`);
+  /**
+   * Vrati uzivatela podla id
+   * @param {number} userId
+   * @returns {Observable<User>}
+   */
+    getById(userId: number): Observable<User> {
+      return this.http.get<User>(
+        `${environment.apiUrl}/CustomUsers/${userId}?access_token=${MyLib.getLoggedUserToken().id}`
+      );
     }
 
-    getById(id: number) {
-        return this.http.get(`${environment.apiUrl}/users/` + id);
-    }
-
+  /**
+   * Registruje noveho uzivatela
+   * @param {User} user
+   * @returns {Observable<Object>}
+   */
     register(user: User) {
-        return this.http.post(`${environment.apiUrl}/users/register`, user);
+        return this.http.post(`${environment.apiUrl}/CustomUsers`, user);
     }
 
-    update(user: User) {
-        return this.http.put(`${environment.apiUrl}/users/` + user.id, user);
+  /**
+   * Aktualizuje udaje o uzivatelovi
+   * @returns {Observable<Object>}
+   * @param userId
+   * @param values
+   */
+    update(userId: number, values: {"email", "username"}) {
+      return this.http.put(
+        `${environment.apiUrl}/CustomUsers/${userId}?access_token=${MyLib.getLoggedUserToken().id}`,
+        values
+        );
     }
 
-    delete(id: number) {
-        return this.http.delete(`${environment.apiUrl}/users/` + id);
+  /**
+   * Odstrani daneho uzivatela
+   * @param {number} userId - id uzivatela, ktoreho chceme odstranit
+   * @returns {Observable<Object>}
+   */
+    delete(userId: number) {
+      let url = `${environment.apiUrl}/CustomUsers/${userId}?access_token=${MyLib.getLoggedUserToken().id}`;
+
+      console.log("url: " + url);
+
+      return this.http.delete(
+        url
+      );
     }
 }

@@ -4,24 +4,33 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
 
 import { AlertService, UserService } from '../../../_services';
+import {User} from "../../../_models";
 
 @Component({templateUrl: 'register.component.html'})
 export class RegisterComponent implements OnInit {
+
     registerForm: FormGroup;
-    loading = false;
-    submitted = false;
+    loading: boolean;
+    submitted: boolean;
 
     constructor(
         private formBuilder: FormBuilder,
         private router: Router,
         private userService: UserService,
-        private alertService: AlertService) { }
+        private alertService: AlertService) {
+
+      this.loading = false;
+      this.submitted = false;
+    }
 
     ngOnInit() {
         this.registerForm = this.formBuilder.group({
-            firstName: ['', Validators.required],
-            lastName: ['', Validators.required],
-            username: ['', Validators.required],
+            email: ['',
+              Validators.compose([
+              Validators.required,
+              Validators.pattern('^[a-zA-Z0-9_.+-]+[@][a-zA-Z0-9-]+[.][a-zA-Z0-9-.]+$')
+            ])],
+            username: ['', Validators.maxLength(50)],
             password: ['', [Validators.required, Validators.minLength(6)]]
         });
     }
@@ -34,11 +43,18 @@ export class RegisterComponent implements OnInit {
 
         // stop here if form is invalid
         if (this.registerForm.invalid) {
-            return;
+          console.log("Invalid form");
+          return;
         }
 
         this.loading = true;
-        this.userService.register(this.registerForm.value)
+
+        let user: User = new User();
+        user.email = this.f['email'].value;
+        user.username = this.f['username'].value;
+        user.password = this.f['password'].value;
+
+        this.userService.register(user)
             .pipe(first())
             .subscribe(
                 data => {
@@ -46,7 +62,7 @@ export class RegisterComponent implements OnInit {
                     this.router.navigate(['/login']);
                 },
                 error => {
-                    this.alertService.error(error);
+                    this.alertService.error("Error during registration");
                     this.loading = false;
                 });
     }

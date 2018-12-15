@@ -17,9 +17,9 @@ const appRoutes: Routes = [
     // User stuff
     { path: 'login', component: LoginComponent },
     { path: 'register', component: RegisterComponent },
-    { path: 'edit-profile', component: ProfileEditorComponent },
-    { path: 'change-password', component: PswdChangerComponent },
-    { path: 'delete-account', component: AccountDeleterComponent },
+    { path: 'edit-profile', component: ProfileEditorComponent, canActivate: [AuthGuard] },
+    { path: 'change-password', component: PswdChangerComponent, canActivate: [AuthGuard] },
+    { path: 'delete-account', component: AccountDeleterComponent, canActivate: [AuthGuard] },
 
     // otherwise redirect to /
     { path: '**', redirectTo: '' }

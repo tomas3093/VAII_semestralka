@@ -1,9 +1,11 @@
 ﻿export class User {
-    id: number;
-    realm: string;
-    username: string;
-    password: string;
-    email: string;
-    emailVerified: boolean;
-    verificationToken: string;
+  id: number;
+  username: string;
+  password: string;
+  email: string;
+
+  // Unused fields
+  realm: string;
+  emailVerified: boolean;
+  verificationToken: string;
 }

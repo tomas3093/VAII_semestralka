@@ -5,6 +5,7 @@ import { first } from 'rxjs/operators';
 
 import { AlertService, AuthenticationService } from '../../../_services';
 
+
 @Component({templateUrl: 'login.component.html'})
 export class LoginComponent implements OnInit {
     loginForm: FormGroup;
@@ -51,7 +52,7 @@ export class LoginComponent implements OnInit {
                     this.router.navigate([this.returnUrl]);
                 },
                 error => {
-                    this.alertService.error(error.toString() + " Login failed!");
+                    this.alertService.error("Wrong username or password");
                     this.loading = false;
                 });
     }

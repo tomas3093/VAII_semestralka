@@ -1,10 +1,4 @@
-import {Agent} from "./agent";
-
-export class Constants {
-
-  // 30 minutes TTL
-  public static readonly USER_LOGIN_DEFAULT_TTL = 60 * 30;
-}
+import {Agent} from "../../_models";
 
 /**
  * Polozka v zozname dlzok frontu
@@ -90,13 +84,4 @@ export class AgentStatistics {
 
     return sum / this.agents.length;
   }
-}
-
-
-export class LoginResponse {
-  id: string;
-  ttl: number;
-  scopes: string;
-  created: string;
-  userId: number;
 }
