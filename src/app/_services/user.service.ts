@@ -17,7 +17,7 @@ export class UserService {
    */
     getById(userId: number): Observable<User> {
       return this.http.get<User>(
-        `${environment.apiUrl}/CustomUsers/${userId}?access_token=${MyLib.getLoggedUserToken().id}`
+        `${environment.apiUrl}/CustomUsers/${userId}?${MyLib.getTokenString()}`
       );
     }
 
@@ -34,11 +34,11 @@ export class UserService {
    * Aktualizuje udaje o uzivatelovi
    * @returns {Observable<Object>}
    * @param userId
-   * @param values
+   * @param values Objekt s atributmi, ktore chceme zmenit
    */
-    update(userId: number, values: {"email", "username"}) {
-      return this.http.put(
-        `${environment.apiUrl}/CustomUsers/${userId}?access_token=${MyLib.getLoggedUserToken().id}`,
+    update(userId: number, values) {
+      return this.http.patch(
+        `${environment.apiUrl}/CustomUsers/${userId}?${MyLib.getTokenString()}`,
         values
         );
     }
@@ -49,12 +49,8 @@ export class UserService {
    * @returns {Observable<Object>}
    */
     delete(userId: number) {
-      let url = `${environment.apiUrl}/CustomUsers/${userId}?access_token=${MyLib.getLoggedUserToken().id}`;
-
-      console.log("url: " + url);
-
       return this.http.delete(
-        url
+        `${environment.apiUrl}/CustomUsers/${userId}?${MyLib.getTokenString()}`
       );
     }
 }

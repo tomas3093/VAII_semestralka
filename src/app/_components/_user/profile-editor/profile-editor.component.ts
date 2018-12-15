@@ -87,14 +87,12 @@ export class ProfileEditorComponent implements OnInit {
       "username": this.f['username'].value
     };
 
-    console.log("ZZ: " + JSON.stringify(values));
-
     // Zapisanie zmien do db
     this.userService.update(this.user.id, values)
       .subscribe(
         data => {
           this.alertService.success('Profile information successfully updated', true);
-          this.router.navigate(['/login']);
+          this.router.navigate(['/dashboard']);
         },
         error => {
           this.alertService.error("Error during update");

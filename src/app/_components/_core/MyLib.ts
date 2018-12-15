@@ -12,4 +12,13 @@ export class MyLib {
   public static getLoggedUserToken(): AccessToken {
     return JSON.parse(localStorage.getItem(Constants.USER_ACCESS_TOKEN_COOKIE_KEY));
   }
+
+
+  /**
+   * Vrati string v tvare 'access_token={Access_token_id}'
+   * @returns {string}
+   */
+  public static getTokenString(): string {
+    return `access_token=${this.getLoggedUserToken().id}`;
+  }
 }

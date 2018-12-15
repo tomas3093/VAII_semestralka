@@ -19,7 +19,7 @@ export class MeasurementService {
    */
   getById(id: number): Observable<Measurement> {
     return this.http.get<Measurement>(
-      `${environment.apiUrl}/measurements/${id}?access_token=${MyLib.getLoggedUserToken().id}`);
+      `${environment.apiUrl}/measurements/${id}?${MyLib.getTokenString()}`);
   }
 
 
@@ -30,6 +30,6 @@ export class MeasurementService {
    */
   getByUser(userId: number) {
     return this.http.get<Measurement[]>(
-      `${environment.apiUrl}/CustomUsers/${userId}/measurements?access_token=${MyLib.getLoggedUserToken().id}`);
+      `${environment.apiUrl}/CustomUsers/${userId}/measurements?${MyLib.getTokenString()}`);
   }
 }
