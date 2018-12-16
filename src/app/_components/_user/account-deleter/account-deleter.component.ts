@@ -3,6 +3,7 @@ import {AlertService, AuthenticationService, UserService} from "../../../_servic
 import {Router} from "@angular/router";
 import {AccessToken} from "../../../_models";
 import {MyLib} from "../../_core/MyLib";
+import {Constants} from "../../_core/Constants";
 
 @Component({
   selector: 'app-account-deleter',
@@ -10,9 +11,14 @@ import {MyLib} from "../../_core/MyLib";
 })
 export class AccountDeleterComponent implements OnInit {
 
+  constants: Constants;
+
   constructor(private userService: UserService,
               private alertService: AlertService,
-              private router: Router) {}
+              private router: Router) {
+
+    this.constants = new Constants();
+  }
 
 
   ngOnInit() {
@@ -22,11 +28,11 @@ export class AccountDeleterComponent implements OnInit {
 
     let userToken: AccessToken = MyLib.getLoggedUserToken();
 
-    this.userService.delete(userToken.userId)
+    this.userService.deleteUser(userToken.userId)
       .subscribe(
         data => {
           AuthenticationService.logout();
-          this.router.navigate([''], );
+          this.router.navigate([Constants.ROUTE_IDENTIFIER_ROOT], );
           this.alertService.success("Your account has been permanently deleted", true);
         },
         error => {

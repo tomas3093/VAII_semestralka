@@ -4,7 +4,10 @@
   <br/>
 
   <h2>Dashboard</h2>
-  <p><a [routerLink]="['/measurement']">New measurement</a></p>
+  <ul>
+    <li><a [routerLink]="[constants.ROUTE_IDENTIFIER_MEASUREMENT]">New measurement</a></li>
+    <li><a [routerLink]="[constants.ROUTE_IDENTIFIER_AGENT_TYPE_EDITOR]">Agent types</a></li>
+  </ul>
   <br/>
 
   <div>
@@ -16,12 +19,18 @@
           <th>No.</th>
           <th>Date</th>
           <th>Measurement</th>
+          <th>Edit</th>
         </tr>
 
         <tr *ngFor="let item of measurements; let i = index">
           <td>{{ i + 1 }}.</td>
-          <td>{{ item.startTime.getDate() + "." + item.startTime.getMonth() + "." + item.startTime.getFullYear()}}</td>
-          <td>{{ item.name }}.</td>
+          <td>{{ item.startTime }}</td>
+          <td>{{ item.name }}</td>
+          <td>
+            <a [routerLink]="[constants.ROUTE_IDENTIFIER_MEASUREMENT_DETAIL, item.measurementId]">
+              <i class="fas fa-edit"></i>
+            </a>
+          </td>
         </tr>
       </table>
     </span>
@@ -35,12 +44,12 @@
   <div>
     <h3>Account</h3>
     <ul>
-      <li><a [routerLink]="['/edit-profile']">Edit profile</a></li>
-      <li><a [routerLink]="['/change-password']">Change password</a></li>
-      <li><a [routerLink]="['/delete-account']">Delete account</a></li>
+      <li><a [routerLink]="[constants.ROUTE_IDENTIFIER_EDIT_PROFILE]">Edit profile</a></li>
+      <li><a [routerLink]="[constants.ROUTE_IDENTIFIER_PASSWORD_CHANGE]">Change password</a></li>
+      <li><a [routerLink]="[constants.ROUTE_IDENTIFIER_DELETE_ACCOUNT]">Delete account</a></li>
     </ul>
   </div>
   <br/>
 
-  <p><a [routerLink]="['/login']">Logout</a></p>
+  <p><a [routerLink]="[constants.ROUTE_IDENTIFIER_LOGIN]">Logout</a></p>
 </div>

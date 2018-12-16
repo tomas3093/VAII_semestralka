@@ -1,4 +1,5 @@
 import {Agent} from "../../_models";
+import {Constants} from "./Constants";
 
 /**
  * Polozka v zozname dlzok frontu
@@ -28,6 +29,10 @@ export class AgentStatistics {
   }
 
   minWaitingTime(): number {
+    if (this.agents.length === 0) {
+      return Constants.COLLECTOR_STATISTICS_UNDEFINED_VAL;
+    }
+
     let min: number = Number.MAX_VALUE;
     for(let i = 0; i < this.agents.length; i++) {
       if(this.agents[i].waitingTime < min)
@@ -38,6 +43,10 @@ export class AgentStatistics {
   }
 
   maxWaitingTime(): number {
+    if (this.agents.length === 0) {
+      return Constants.COLLECTOR_STATISTICS_UNDEFINED_VAL;
+    }
+
     let max: number = Number.MIN_VALUE;
     for(let i = 0; i < this.agents.length; i++) {
       if(this.agents[i].waitingTime > max)
@@ -48,6 +57,10 @@ export class AgentStatistics {
   }
 
   avgWaitingTime(): number {
+    if (this.agents.length === 0) {
+      return Constants.COLLECTOR_STATISTICS_UNDEFINED_VAL;
+    }
+
     let sum: number = 0;
     for(let i = 0; i < this.agents.length; i++) {
       sum += this.agents[i].waitingTime;
@@ -57,6 +70,10 @@ export class AgentStatistics {
   }
 
   minDelayTime(): number {
+    if (this.agents.length === 0) {
+      return Constants.COLLECTOR_STATISTICS_UNDEFINED_VAL;
+    }
+
     let min: number = Number.MAX_VALUE;
     for(let i = 0; i < this.agents.length; i++) {
       if(this.agents[i].delayTime < min)
@@ -67,6 +84,10 @@ export class AgentStatistics {
   }
 
   maxDelayTime(): number {
+    if (this.agents.length === 0) {
+      return Constants.COLLECTOR_STATISTICS_UNDEFINED_VAL;
+    }
+
     let max: number = Number.MIN_VALUE;
     for(let i = 0; i < this.agents.length; i++) {
       if(this.agents[i].delayTime > max)
@@ -77,6 +98,10 @@ export class AgentStatistics {
   }
 
   avgDelayTime(): number {
+    if (this.agents.length === 0) {
+      return Constants.COLLECTOR_STATISTICS_UNDEFINED_VAL;
+    }
+
     let sum: number = 0;
     for(let i = 0; i < this.agents.length; i++) {
       sum += this.agents[i].delayTime;

@@ -1,3 +1,46 @@
-<p>
-  Formular na pridanie noveho typu agenta
-</p>
+<h2>Agent types</h2>
+<br/>
+
+<div>
+  <span *ngIf = "agentTypes.length > 0; else agentTypesEmpty">
+      <table class="table table-striped">
+        <tr>
+          <th>No.</th>
+          <th>Type</th>
+        </tr>
+
+        <tr *ngFor="let item of agentTypes; let i = index">
+          <td>{{ i + 1 }}.</td>
+          <td>{{ item.typeName }}</td>
+        </tr>
+      </table>
+    </span>
+
+  <ng-template #agentTypesEmpty>
+    <p>There is no agent types defined.</p>
+  </ng-template>
+</div>
+
+<button class="btn btn-primary" (click)="toggleForm()">Add new</button>
+<br/>
+
+<div [hidden]="!formEnabled">
+  <br/>
+  <form [formGroup]="inputForm" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label for="typeName">Name</label>
+      <input id="typeName" type="text" formControlName="typeName" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.typeName.errors }" />
+      <div *ngIf="submitted && f.typeName.errors" class="invalid-feedback">
+        <div *ngIf="f.typeName.errors.required">Name of agent type is required</div>
+        <div *ngIf="f.typeName.errors.minlength">Minimum length is {{constants.FORM_AGENTTYPE_NAME_MIN_LENGTH}}</div>
+        <div *ngIf="f.typeName.errors.maxlength">Name is too long. Maximum length is {{constants.FORM_AGENTTYPE_NAME_MAX_LENGTH}}</div>
+        <div *ngIf="f.typeName.errors.pattern">Name contains forbidden characters</div>
+      </div>
+    </div>
+    <div class="form-group">
+      <button type="submit" class="btn btn-primary">Submit</button>
+      <img *ngIf="loading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+      <a [routerLink]="[constants.ROUTE_IDENTIFIER_ROOT]" class="btn btn-link">Cancel</a>
+    </div>
+  </form>
+</div>

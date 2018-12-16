@@ -36,7 +36,7 @@ export class UserService {
    * @param userId
    * @param values Objekt s atributmi, ktore chceme zmenit
    */
-    update(userId: number, values) {
+    updateUser(userId: number, values) {
       return this.http.patch(
         `${environment.apiUrl}/CustomUsers/${userId}?${MyLib.getTokenString()}`,
         values
@@ -48,7 +48,7 @@ export class UserService {
    * @param {number} userId - id uzivatela, ktoreho chceme odstranit
    * @returns {Observable<Object>}
    */
-    delete(userId: number) {
+    deleteUser(userId: number) {
       return this.http.delete(
         `${environment.apiUrl}/CustomUsers/${userId}?${MyLib.getTokenString()}`
       );

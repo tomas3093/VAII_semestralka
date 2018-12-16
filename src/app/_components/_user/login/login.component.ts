@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
 
 import { AlertService, AuthenticationService } from '../../../_services';
+import {Constants} from "../../_core/Constants";
 
 
 @Component({templateUrl: 'login.component.html'})
@@ -13,12 +14,17 @@ export class LoginComponent implements OnInit {
     submitted = false;
     returnUrl: string;
 
+    constants: Constants;
+
     constructor(
         private formBuilder: FormBuilder,
         private route: ActivatedRoute,
         private router: Router,
         private authenticationService: AuthenticationService,
-        private alertService: AlertService) {}
+        private alertService: AlertService) {
+
+      this.constants = new Constants();
+    }
 
     ngOnInit() {
         this.loginForm = this.formBuilder.group({

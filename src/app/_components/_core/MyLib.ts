@@ -21,4 +21,14 @@ export class MyLib {
   public static getTokenString(): string {
     return `access_token=${this.getLoggedUserToken().id}`;
   }
+
+
+  /**
+   * Vrati retazec s prvym velkym pismenom a ostatne male
+   * @param {string} str
+   * @returns {string}
+   */
+  public static capitalizeFirstLetter(str: string) {
+    return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+  }
 }

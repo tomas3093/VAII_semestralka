@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import {HttpClient} from "@angular/common/http";
-import {Measurement} from "../_models";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
+import {AgentType, Measurement} from "../_models";
 import {environment} from "../../environments/environment";
 import {Observable} from "rxjs/index";
 import {MyLib} from "../_components/_core/MyLib";
@@ -17,9 +17,9 @@ export class MeasurementService {
    * @param {number} id
    * @returns {Observable<Measurement>}
    */
-  getById(id: number): Observable<Measurement> {
+  getMeasurementById(id: number): Observable<Measurement> {
     return this.http.get<Measurement>(
-      `${environment.apiUrl}/measurements/${id}?${MyLib.getTokenString()}`);
+      `${environment.apiUrl}/Measurements/${id}?${MyLib.getTokenString()}`);
   }
 
 
@@ -28,8 +28,67 @@ export class MeasurementService {
    * @param {number} userId
    * @returns {Observable<Measurement[]>}
    */
-  getByUser(userId: number) {
+  getMeasurementsByUser(userId: number) {
+    let header = new HttpHeaders()
+      .set('userId', `${userId}`);
+
     return this.http.get<Measurement[]>(
-      `${environment.apiUrl}/CustomUsers/${userId}/measurements?${MyLib.getTokenString()}`);
+      `${environment.apiUrl}/Measurements/?${MyLib.getTokenString()}`, {headers: header});
+  }
+
+
+  /**
+   * Vytvori nove meranie
+   * @param {Measurement} measurement
+   * @returns {Observable<Object>}
+   */
+  createMeasurement(measurement: Measurement) {
+    return this.http.post(
+      `${environment.apiUrl}/Measurements/?${MyLib.getTokenString()}`, measurement);
+  }
+
+
+  /**
+   * Odstrani dane meranie
+   * @param {number} measurementId
+   * @returns {Observable<Object>}
+   */
+  deleteMeasurement(measurementId: number) {
+    return this.http.delete(
+      `${environment.apiUrl}/Measurements/${measurementId}?${MyLib.getTokenString()}`
+    );
+  }
+
+
+  /**
+   * Odstrani vsetkych agentov daneho merania
+   * @param {number} measurementId
+   */
+  deleteMeasurementAgents(measurementId: number) {
+    return this.http.delete(
+      `${environment.apiUrl}/Measurements/${measurementId}/Agents?${MyLib.getTokenString()}`
+    );
+  }
+
+
+  /**
+   * Vrati vsetky existujuce typy agentov
+   * @returns {Observable<AgentType[]>}
+   */
+  getAgentTypes() {
+    return this.http.get<AgentType[]>(
+      `${environment.apiUrl}/AgentTypes?${MyLib.getTokenString()}`
+    );
+  }
+
+
+  /**
+   * Vytvori novy typ agenta
+   * @param {AgentType} agentType
+   * @returns {Observable<Object>}
+   */
+  createAgentType(agentType: AgentType) {
+    return this.http.post(
+      `${environment.apiUrl}/AgentTypes/?${MyLib.getTokenString()}`, agentType);
   }
 }

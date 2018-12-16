@@ -1,0 +1,11 @@
+<h1>Measurement</h1>
+<ul>
+  <li>{{measurement.measurementId}}</li>
+  <li>{{measurement.agentTypeId}}</li>
+  <li>{{measurement.startTime}}</li>
+  <li>{{measurement.name}}</li>
+  <li>{{measurement.description}}</li>
+</ul>
+
+<button class="btn btn-danger" (click)="deleteMeasurement()">Delete measurement</button>
+<a [routerLink]="[constants.ROUTE_IDENTIFIER_ROOT]" class="btn btn-link">Cancel</a>

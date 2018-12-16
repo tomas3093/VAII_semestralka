@@ -1,5 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import {Agent, AgentStatistics, Measurement, QueueLengthListItem} from "../../../_models";
+import {Agent, AgentStatistics, AgentType, Measurement, QueueLengthListItem} from "../../../_models";
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {AlertService} from "../../../_services";
+import {Router} from "@angular/router";
+import {Constants} from "../Constants";
+import {MeasurementService} from "../../../_services/measurement.service";
+import {MyLib} from "../MyLib";
 
 @Component({
   selector: 'app-collector',
@@ -8,7 +14,14 @@ import {Agent, AgentStatistics, Measurement, QueueLengthListItem} from "../../..
 })
 export class CollectorComponent implements OnInit {
 
+  measurementForm: FormGroup;
+  loading: boolean;         // ci sa nacitava formular
+  submitted: boolean;       // ci bol submitnuty form
+  measurementOpen: boolean; // ci bolo spustene meranie
+
+  // Data
   measurement: Measurement;
+  agentTypes: AgentType[];
 
   allAgents: AgentStatistics;
   agentsQueue: Agent[];
@@ -16,14 +29,96 @@ export class CollectorComponent implements OnInit {
   queueLengths: QueueLengthListItem[];
   elapsedTimeLabel: string;
 
-  constructor() {
+  constants: Constants;
+
+  constructor(
+      private formBuilder: FormBuilder,
+      private router: Router,
+      private measurementService: MeasurementService,
+      private alertService: AlertService) {
+
+    this.loading = false;
+    this.submitted = false;
+    this.measurementOpen = false;
+
     this.measurement = new Measurement();
+    this.agentTypes = [];
     this.reset();
+
+    this.constants = new Constants();
   }
 
   ngOnInit() {
+    this.measurementForm = this.formBuilder.group({
+      name: ['',
+        Validators.compose([
+          Validators.required,
+          Validators.pattern('^[a-zA-Z]+[a-zA-Z0-9-_]*$'),
+          Validators.minLength(this.constants.FORM_MEASUREMENT_NAME_MIN_LENGTH),
+          Validators.maxLength(this.constants.FORM_MEASUREMENT_NAME_MAX_LENGTH)
+        ])],
+      description: ['',
+        Validators.maxLength(this.constants.FORM_MEASUREMENT_DESCRIPTION_MAX_LENGTH)
+      ],
+      typeOptions: ['']
+    });
+
+    // Ziskanie agent typov
+    this.measurementService.getAgentTypes()
+      .subscribe(
+        data => {
+          this.agentTypes = data;
+        },
+        error => {
+          console.log(JSON.stringify(error));
+        }
+      );
+
+
     // Update casu simulacie
     setInterval(() => {this.updateTime()}, 1000);
+  }
+
+
+  /**
+   * convenience getter for easy access to form fields
+   * @returns {{[p: string]: AbstractControl}}
+   */
+  get f() { return this.measurementForm.controls; }
+
+
+  /**
+   * Submit formulara measurementForm
+   */
+  onSubmit() {
+    this.submitted = true;
+
+    // stop here if form is invalid
+    if (this.measurementForm.invalid) {
+      console.log("Invalid form");
+      return;
+    }
+
+    this.loading = true;
+
+    // Measurement
+    this.measurement.name = this.f['name'].value;
+    this.measurement.startTime = new Date().getTime();
+    this.measurement.description = this.f['description'].value;
+    this.measurement.userId = MyLib.getLoggedUserToken().userId;
+
+    this.measurementService.createMeasurement(this.measurement)
+      .subscribe(
+        data => {
+          this.alertService.success('Measurement created');
+
+          this.measurementOpen = true;
+        },
+        error => {
+          this.alertService.error("Error during creation of measurement");
+          this.loading = false;
+          console.log(JSON.stringify(error));
+        });
   }
 
 
@@ -31,7 +126,7 @@ export class CollectorComponent implements OnInit {
    * Nastavi vsetky udaje aplikacie na default hodnoty
    */
   reset() {
-    this.measurement.startTime = new Date();
+    this.measurement.startTime = 0;
 
     this.allAgents = new AgentStatistics();
     this.agentsQueue = [];
@@ -100,7 +195,7 @@ export class CollectorComponent implements OnInit {
    * Funkcia na aktualizovanie casu, ktory uplynul od zaciatku simulacie
    */
   updateTime() {
-    let dateDiff: Date = new Date(new Date().getTime() - this.measurement.startTime.getTime());
+    let dateDiff: Date = new Date(new Date().getTime() - this.measurement.startTime);
     let seconds: number = dateDiff.getSeconds();
     let minutes: number = dateDiff.getMinutes();
     let hours: number = dateDiff.getHours() - 1;

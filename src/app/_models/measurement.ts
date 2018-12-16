@@ -2,8 +2,8 @@ export class Measurement {
   measurementId: number;
   name: string;
   description: string;
-  startTime: Date;
-  stopTime: Date;
+  startTime: number;    // timestamp
+  stopTime: number;     // timestamp
 
   // FKs
   userId: number;

@@ -3,6 +3,7 @@ import {User, Measurement, AccessToken} from "../../../_models";
 import {UserService} from "../../../_services";
 import {MeasurementService} from "../../../_services/measurement.service";
 import {MyLib} from "../MyLib";
+import {Constants} from "../Constants";
 
 @Component({
   selector: 'app-dashboard',
@@ -15,11 +16,15 @@ export class DashboardComponent implements OnInit {
   // Recent measurements of current user
   measurements: Measurement[];
 
+  constants: Constants;
+
   constructor(private userService: UserService,
               private measurementService: MeasurementService) {
 
     this.currentUser = new User();
     this.measurements = [];
+
+    this.constants = new Constants();
   }
 
 
@@ -34,7 +39,7 @@ export class DashboardComponent implements OnInit {
           this.currentUser = data;
 
           // Ziskanie measurementov daneho usera
-          this.measurementService.getByUser(this.currentUser.id)
+          this.measurementService.getMeasurementsByUser(this.currentUser.id)
             .subscribe(
               data => {
                 this.measurements = data;

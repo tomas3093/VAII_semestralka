@@ -22,4 +22,6 @@ priecinky zacinajuce _ su shared code, ostatne je feature specific code
 
 
 ## TODO 
-  * Dorobit profile editor
+  * Dorobit measurement detail
+  * Dorobit collector - rozdelit to na dva komponenty
+  * Jeden pre formular a druhy pre appku

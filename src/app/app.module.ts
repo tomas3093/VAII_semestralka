@@ -1,6 +1,6 @@
 ﻿import { NgModule }      from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { ReactiveFormsModule }    from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { AppComponent }  from './app.component';
 import { routing }        from './app.routing';
@@ -12,17 +12,19 @@ import { LoginComponent } from './_components/_user/login';
 import { RegisterComponent } from './_components/_user/register';
 import { CollectorComponent } from './_components/_core/collector/collector.component';
 import { AgentTypeFormComponent } from './_components/_core/agent-type-form/agent-type-form.component';
-import { ProfileEditorComponent } from './_components/_user/profile-editor/profile-editor.component';
-import { PswdChangerComponent } from './_components/_user/pswd-changer/pswd-changer.component';
-import { AccountDeleterComponent } from './_components/_user/account-deleter/account-deleter.component'
-;
+import { ProfileEditorComponent } from './_components/_user/profile-editor';
+import { PswdChangerComponent } from './_components/_user/pswd-changer';
+import { AccountDeleterComponent } from './_components/_user/account-deleter';
 import { HeaderComponent } from './_components/_layout/header/header.component'
-
-@NgModule({
+;
+import { MeasurementDetailComponent } from './_components/_core/measurement-detail/measurement-detail.component'
+;
+import { PageNotFoundComponent } from './_components/_core/page-not-found/page-not-found.component'@NgModule({
     imports: [
         BrowserModule,
         ReactiveFormsModule,
         HttpClientModule,
+        FormsModule,
         routing
     ],
     declarations: [
@@ -35,9 +37,11 @@ import { HeaderComponent } from './_components/_layout/header/header.component'
         CollectorComponent,
         ProfileEditorComponent ,
         PswdChangerComponent ,
-        AccountDeleterComponent
+        AccountDeleterComponent,
+        HeaderComponent
 ,
-        HeaderComponent    ],
+        MeasurementDetailComponent ,
+        PageNotFoundComponent   ],
     providers: [
         AuthGuard,
         AlertService,
