@@ -9,7 +9,7 @@ export class Constants {
   // Routes
   public static readonly ROUTE_IDENTIFIER_ROOT: string = '';
   public static readonly ROUTE_IDENTIFIER_DASHBOARD: string = 'dashboard';
-  public static readonly ROUTE_IDENTIFIER_MEASUREMENT: string = 'measurement';
+  public static readonly ROUTE_IDENTIFIER_MEASUREMENT: string = 'new-measurement';
   public static readonly ROUTE_IDENTIFIER_MEASUREMENT_DETAIL: string = 'measurement';
   public static readonly ROUTE_IDENTIFIER_AGENT_TYPE_EDITOR: string = 'type-edit';
   public static readonly ROUTE_IDENTIFIER_LOGIN: string = 'login';
@@ -17,6 +17,7 @@ export class Constants {
   public static readonly ROUTE_IDENTIFIER_EDIT_PROFILE: string = 'profile';
   public static readonly ROUTE_IDENTIFIER_PASSWORD_CHANGE: string = 'pswd-change';
   public static readonly ROUTE_IDENTIFIER_DELETE_ACCOUNT: string = 'delete-account';
+  public static readonly ROUTE_NOT_FOUND: string = '404';
 
   get ROUTE_IDENTIFIER_ROOT() { return Constants.ROUTE_IDENTIFIER_ROOT; }
   get ROUTE_IDENTIFIER_DASHBOARD() { return Constants.ROUTE_IDENTIFIER_DASHBOARD; }
@@ -28,6 +29,7 @@ export class Constants {
   get ROUTE_IDENTIFIER_EDIT_PROFILE() { return Constants.ROUTE_IDENTIFIER_EDIT_PROFILE; }
   get ROUTE_IDENTIFIER_PASSWORD_CHANGE() { return Constants.ROUTE_IDENTIFIER_PASSWORD_CHANGE; }
   get ROUTE_IDENTIFIER_DELETE_ACCOUNT() { return Constants.ROUTE_IDENTIFIER_DELETE_ACCOUNT; }
+  get ROUTE_NOT_FOUND() { return Constants.ROUTE_NOT_FOUND; }
 
 
   // Form validation

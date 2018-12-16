@@ -4,14 +4,14 @@ import { DashboardComponent } from './_components/_core/dashboard';
 import { LoginComponent } from './_components/_user/login';
 import { RegisterComponent } from './_components/_user/register';
 import { AuthGuard } from './_guards';
-import {CollectorComponent} from "./_components/_core/collector/collector.component";
 import {ProfileEditorComponent} from "./_components/_user/profile-editor";
 import {PswdChangerComponent} from "./_components/_user/pswd-changer";
 import {AccountDeleterComponent} from "./_components/_user/account-deleter";
-import {AgentTypeFormComponent} from "./_components/_core/agent-type-form/agent-type-form.component";
+import {AgentTypeFormComponent} from "./_components/_core/agent-type-form";
 import {Constants} from "./_components/_core/Constants";
-import {MeasurementDetailComponent} from "./_components/_core/measurement-detail/measurement-detail.component";
+import {MeasurementDetailComponent} from "./_components/_core/measurement-detail";
 import {PageNotFoundComponent} from "./_components/_core/page-not-found/page-not-found.component";
+import {MeasurementMakerComponent} from "./_components/_core/measurement-maker";
 
 const appRoutes: Routes = [
     { path: Constants.ROUTE_IDENTIFIER_ROOT,
@@ -24,7 +24,7 @@ const appRoutes: Routes = [
       component: MeasurementDetailComponent, canActivate: [AuthGuard], pathMatch: 'full'
     },
     { path: Constants.ROUTE_IDENTIFIER_MEASUREMENT,
-      component: CollectorComponent, canActivate: [AuthGuard]
+      component: MeasurementMakerComponent, canActivate: [AuthGuard]
     },
     { path: Constants.ROUTE_IDENTIFIER_AGENT_TYPE_EDITOR,
       component: AgentTypeFormComponent, canActivate: [AuthGuard]
@@ -47,7 +47,11 @@ const appRoutes: Routes = [
       component: AccountDeleterComponent, canActivate: [AuthGuard]
     },
 
-    // otherwise redirect to /
+
+    // redirect to Not found page
+    { path: Constants.ROUTE_NOT_FOUND, component: PageNotFoundComponent },
+
+    // otherwise redirect to Not found page
     { path: '**', component: PageNotFoundComponent }
 ];
 

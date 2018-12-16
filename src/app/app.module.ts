@@ -10,16 +10,17 @@ import { AlertService, AuthenticationService, UserService } from './_services';
 import { DashboardComponent } from './_components/_core/dashboard';
 import { LoginComponent } from './_components/_user/login';
 import { RegisterComponent } from './_components/_user/register';
-import { CollectorComponent } from './_components/_core/collector/collector.component';
-import { AgentTypeFormComponent } from './_components/_core/agent-type-form/agent-type-form.component';
+import { AgentTypeFormComponent } from './_components/_core/agent-type-form';
 import { ProfileEditorComponent } from './_components/_user/profile-editor';
 import { PswdChangerComponent } from './_components/_user/pswd-changer';
 import { AccountDeleterComponent } from './_components/_user/account-deleter';
-import { HeaderComponent } from './_components/_layout/header/header.component'
-;
-import { MeasurementDetailComponent } from './_components/_core/measurement-detail/measurement-detail.component'
-;
-import { PageNotFoundComponent } from './_components/_core/page-not-found/page-not-found.component'@NgModule({
+import { HeaderComponent } from './_components/_layout/header/header.component';
+import { MeasurementDetailComponent } from './_components/_core/measurement-detail';
+import { PageNotFoundComponent } from './_components/_core/page-not-found';
+import { MeasurementMakerComponent } from './_components/_core/measurement-maker';
+import { NewMeasurementFormComponent } from './_components/_core/new-measurement-form';
+
+@NgModule({
     imports: [
         BrowserModule,
         ReactiveFormsModule,
@@ -34,14 +35,15 @@ import { PageNotFoundComponent } from './_components/_core/page-not-found/page-n
         LoginComponent,
         RegisterComponent,
         AgentTypeFormComponent,
-        CollectorComponent,
         ProfileEditorComponent ,
         PswdChangerComponent ,
         AccountDeleterComponent,
-        HeaderComponent
-,
+        HeaderComponent,
         MeasurementDetailComponent ,
-        PageNotFoundComponent   ],
+        PageNotFoundComponent,
+        MeasurementMakerComponent,
+        NewMeasurementFormComponent
+    ],
     providers: [
         AuthGuard,
         AlertService,

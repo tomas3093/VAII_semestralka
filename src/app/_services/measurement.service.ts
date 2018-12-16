@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {AgentType, Measurement} from "../_models";
+import {Agent, AgentType, Measurement} from "../_models";
 import {environment} from "../../environments/environment";
 import {Observable} from "rxjs/index";
 import {MyLib} from "../_components/_core/MyLib";
@@ -61,6 +61,17 @@ export class MeasurementService {
 
 
   /**
+   * Vytvori agenta pre zadane meranie
+   * @param {Agent} agent
+   * @param measurementId
+   */
+  createMeasurementAgent(measurementId: number, agent: Agent) {
+    return this.http.post(
+      `${environment.apiUrl}/Agents/?${MyLib.getTokenString()}`, agent);
+  }
+
+
+  /**
    * Odstrani vsetkych agentov daneho merania
    * @param {number} measurementId
    */
@@ -80,6 +91,18 @@ export class MeasurementService {
       `${environment.apiUrl}/AgentTypes?${MyLib.getTokenString()}`
     );
   }
+
+
+  /**
+   * Vrati agent type podla zadaneho id
+   * @param {number} id
+   * @returns {Observable<AgentType>}
+   */
+  getAgentTypeById(id: number) {
+    return this.http.get<AgentType>(
+      `${environment.apiUrl}/AgentTypes/${id}?${MyLib.getTokenString()}`
+    );
+}
 
 
   /**

@@ -13,7 +13,7 @@
   <div>
     <h3>Recent measurements</h3>
 
-    <span *ngIf = "measurements.length > 0; else measurementsEmpty">
+    <div *ngIf = "measurements.length > 0; else measurementsEmpty">
       <table class="table table-striped">
         <tr>
           <th>No.</th>
@@ -33,7 +33,7 @@
           </td>
         </tr>
       </table>
-    </span>
+    </div>
 
     <ng-template #measurementsEmpty>
       <p>You have no recent measurements.</p>

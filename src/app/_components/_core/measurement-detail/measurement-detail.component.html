@@ -1,11 +1,29 @@
-<h1>Measurement</h1>
-<ul>
-  <li>{{measurement.measurementId}}</li>
-  <li>{{measurement.agentTypeId}}</li>
-  <li>{{measurement.startTime}}</li>
-  <li>{{measurement.name}}</li>
-  <li>{{measurement.description}}</li>
-</ul>
+<div>
+  <h1>Measurement detail</h1>
 
-<button class="btn btn-danger" (click)="deleteMeasurement()">Delete measurement</button>
-<a [routerLink]="[constants.ROUTE_IDENTIFIER_ROOT]" class="btn btn-link">Cancel</a>
+  <table class="table table-striped">
+    <tr>
+      <td>Name</td>
+      <td>{{measurement.name}}</td>
+    </tr>
+    <tr>
+      <td>Description</td>
+      <td>{{measurement.description}}</td>
+    </tr>
+    <tr>
+      <td>Agent type</td>
+      <td>{{measurementAgentType.typeName}}</td>
+    </tr>
+    <tr>
+      <td>Started</td>
+      <td>{{measurement.startTime}}</td>
+    </tr>
+    <tr>
+      <td>Stopped</td>
+      <td>{{measurement.stopTime}}</td>
+    </tr>
+  </table>
+
+  <button class="btn btn-danger" (click)="deleteMeasurement()">Delete measurement</button>
+  <a [routerLink]="[constants.ROUTE_IDENTIFIER_ROOT]" class="btn btn-link">Cancel</a>
+</div>

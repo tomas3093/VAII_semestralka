@@ -32,7 +32,7 @@ export class AccountDeleterComponent implements OnInit {
       .subscribe(
         data => {
           AuthenticationService.logout();
-          this.router.navigate([Constants.ROUTE_IDENTIFIER_ROOT], );
+          this.router.navigate([Constants.ROUTE_IDENTIFIER_ROOT]);
           this.alertService.success("Your account has been permanently deleted", true);
         },
         error => {
