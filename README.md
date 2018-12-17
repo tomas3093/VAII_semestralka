@@ -23,3 +23,4 @@ priecinky zacinajuce _ su shared code, ostatne je feature specific code
 
 ## TODO 
   * Dorobit Measurement-maker (layout a ukladanie agentov do db)
+  * Spisat zoznam features

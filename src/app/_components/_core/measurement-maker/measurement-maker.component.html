@@ -7,75 +7,89 @@
 <div id="measurement-box" [hidden]="!measurementStarted" (keyup.n)="newAgentArrivalFunction()" (keyup.k)="endOfAgentDelayFunction()">
   <p><strong>Measurement {{measurement.name}}</strong></p>
 
-  <div id="buttons">
-    <button
-      class="btn-default btn-lg"
-      (click)="newAgentArrivalFunction()">
-      Novy zakaznik
-    </button>
+  <!-- Buttons -->
+  <div id="control-box">
+    <div id="control-box-upper" class="btn-group-sm">
+      <button class="btn btn-primary"
+              title="Save current measurement"
+              (click)="onSave()">
+        Save
+      </button>
+      <button type="button" class="btn btn-info btn-secondary"
+              title="Reset current measurement">
+        <i class="fas fa-redo-alt"></i>
+      </button>
+      <button type="button" class="btn btn-danger btn-secondary"
+              title="Delete current measurement">
+        <i class="fas fa-skull-crossbones"></i>
+      </button>
+    </div>
 
-    <button
-      class="btn-default btn-lg"
-      (click)="endOfAgentDelayFunction()">
-      Koniec obsluhy
-    </button>
-
-    <button
-      class="btn-info btn-sm"
-      title="Reset aplikacie">
-      <i class="fas fa-redo-alt"></i>
-    </button>
-
-    <button
-      class="btn-danger btn-sm"
-      title="Vymazanie vsetkych udajov z databazy">
-      <i class="fas fa-skull-crossbones"></i>
-    </button>
+    <div id="control-box-lower" class="btn-group">
+      <button type="button" class="btn btn-secondary"
+              (click)="newAgentArrivalFunction()">
+        New arrival
+      </button>
+      <button type="button" class="btn btn-secondary"
+              (click)="endOfAgentDelayFunction()">
+        Stop delay
+      </button>
+    </div>
   </div>
 
-  <div id="stats-box">
-    <table class="table table-striped">
-      <tr>
-        <td>Cas od zaciatku:</td>
-        <td>{{elapsedTimeLabel}}</td>
-      </tr>
-      <tr>
-        <td>Pocet zakaznikov:</td>
-        <td>{{allAgents.length()}}</td>
-      </tr>
-      <tr>
-        <td>Priemerny cas obsluhy:</td>
-        <td>{{allAgents.avgDelayTime() / 1000 | number}}</td>
-      </tr>
-      <tr>
-        <td>Min cas obsluhy:</td>
-        <td>{{allAgents.minDelayTime() / 1000 | number}}</td>
-      </tr>
-      <tr>
-        <td>Max dlzka frontu:</td>
-        <td>{{-1}}</td>
-      </tr>
-      <tr>
-        <td>Priemerny cas cakania:</td>
-        <td>{{allAgents.avgWaitingTime() / 1000 | number}}</td>
-      </tr>
-      <tr>
-        <td>Max cas cakania:</td>
-        <td>{{allAgents.maxWaitingTime() / 1000 | number}}</td>
-      </tr>
-      <tr>
-        <td>Max cas obsluhy:</td>
-        <td>{{allAgents.maxDelayTime() / 1000 | number}}</td>
-      </tr>
-    </table>
-  </div>
-
-  <!-- FRONT -->
+  <!-- Front -->
   <div id="customers-front">
     <div *ngFor="let c of agentsQueue; index as i" class="customer-box">
       <span class="font-3em">{{i + 1}}</span><br/> No: {{c.agentId}}
     </div>
   </div>
+
+  <!-- Stats -->
+  <div id="btn-stats" class="btn-group">
+    <button type="button" class="btn btn-primary"
+            title="Show statistics"
+            (click)="toggleStats()">
+      Stats
+    </button>
+  </div>
+  <div id="stats-box" [hidden]="!statsEnabled">
+    <table class="table table-striped">
+      <tr>
+        <td>Elapsed time:</td>
+        <td>{{elapsedTimeLabel}}</td>
+      </tr>
+      <tr>
+        <td>Agents count:</td>
+        <td>{{allAgents.length()}}</td>
+      </tr>
+      <tr>
+        <td>Average delay time:</td>
+        <td>{{allAgents.avgDelayTime() / 1000 | number}}</td>
+      </tr>
+      <tr>
+        <td>Min delay time:</td>
+        <td>{{allAgents.minDelayTime() / 1000 | number}}</td>
+      </tr>
+      <tr>
+        <td>Max queue length:</td>
+        <td>{{-1}}</td>
+      </tr>
+      <tr>
+        <td>Average waiting time:</td>
+        <td>{{allAgents.avgWaitingTime() / 1000 | number}}</td>
+      </tr>
+      <tr>
+        <td>Max waiting time:</td>
+        <td>{{allAgents.maxWaitingTime() / 1000 | number}}</td>
+      </tr>
+      <tr>
+        <td>Max delay time:</td>
+        <td>{{allAgents.maxDelayTime() / 1000 | number}}</td>
+      </tr>
+    </table>
+  </div>
+
+
 
   <!-- Poslednych 5 zaznamov
   <div id="recent-arrivals" [hidden]="arrivals.size() === 0">
@@ -97,9 +111,5 @@
       </tbody>
     </table>
   </div>-->
-
-  <div>
-    <button class="btn btn-primary">Save</button>
-  </div>
 
 </div>

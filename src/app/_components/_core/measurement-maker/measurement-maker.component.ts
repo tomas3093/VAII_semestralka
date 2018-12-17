@@ -4,6 +4,7 @@ import {Constants} from "../Constants";
 import {MeasurementService} from "../../../_services/measurement.service";
 import {Router} from "@angular/router";
 import {AlertService} from "../../../_services";
+import {statsErrorsToString} from "@angular-devkit/build-angular/src/angular-cli-files/utilities/stats";
 
 @Component({
   selector: 'app-measurement-maker',
@@ -17,10 +18,10 @@ export class MeasurementMakerComponent implements OnInit {
 
   allAgents: AgentStatistics;
   agentsQueue: Agent[];
-
   queueLengths: QueueLengthListItem[];
-  elapsedTimeLabel: string;
 
+  elapsedTimeLabel: string;
+  statsEnabled: boolean;
   constants: Constants;
 
   constructor(private router: Router,
@@ -36,6 +37,7 @@ export class MeasurementMakerComponent implements OnInit {
     this.allAgents = new AgentStatistics();
     this.agentsQueue = [];
     this.queueLengths = [];
+    this.statsEnabled = false;
 
     this.constants = new Constants();
   }
@@ -54,6 +56,14 @@ export class MeasurementMakerComponent implements OnInit {
    */
   onSave() {
     // TODO
+  }
+
+
+  /**
+   * Zobrazenie statistik aktualneho merania
+   */
+  toggleStats() {
+    this.statsEnabled = !this.statsEnabled;
   }
 
 

@@ -1,31 +1,30 @@
-#editor-box {
-  padding: 15px;
+#control-box {
+  width: 100%;
 }
 
-#buttons button {
-  margin-right: 20px;
+#control-box div {
+  width: 100%;
+  margin-bottom: 2px;
 }
 
-#stats-box {
-  margin: 15px 0;
+#control-box-upper button {
+  width: 33.33%;
 }
 
-.customer-box {
-  background-color: #545456;
-  color: white;
-  padding: 15px;
-  margin: 5px;
+#control-box-lower button {
+  width: 50%;
 }
 
-#customers-front div:first-of-type {
-  background-color: #00ff00;
-  color: black;
+#btn-stats {
+  width: 100%;
+  margin-top: 5px;
+  text-align: center;
 }
 
-.font-3em {
-  font-size: 3em;
+#btn-stats button {
+  width: 100%;
 }
 
 #customers-front {
-  display: flex;
+  min-height: 200px;
 }
