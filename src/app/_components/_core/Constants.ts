@@ -8,7 +8,6 @@ export class Constants {
 
   // Routes
   public static readonly ROUTE_IDENTIFIER_ROOT: string = '';
-  public static readonly ROUTE_IDENTIFIER_DASHBOARD: string = 'dashboard';
   public static readonly ROUTE_IDENTIFIER_MEASUREMENT: string = 'new-measurement';
   public static readonly ROUTE_IDENTIFIER_MEASUREMENT_DETAIL: string = 'measurement';
   public static readonly ROUTE_IDENTIFIER_AGENT_TYPE_EDITOR: string = 'type-edit';
@@ -20,7 +19,6 @@ export class Constants {
   public static readonly ROUTE_NOT_FOUND: string = '404';
 
   get ROUTE_IDENTIFIER_ROOT() { return Constants.ROUTE_IDENTIFIER_ROOT; }
-  get ROUTE_IDENTIFIER_DASHBOARD() { return Constants.ROUTE_IDENTIFIER_DASHBOARD; }
   get ROUTE_IDENTIFIER_MEASUREMENT() { return Constants.ROUTE_IDENTIFIER_MEASUREMENT; }
   get ROUTE_IDENTIFIER_MEASUREMENT_DETAIL() { return Constants.ROUTE_IDENTIFIER_MEASUREMENT_DETAIL; }
   get ROUTE_IDENTIFIER_AGENT_TYPE_EDITOR() { return Constants.ROUTE_IDENTIFIER_AGENT_TYPE_EDITOR; }

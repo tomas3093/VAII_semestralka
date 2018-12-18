@@ -39,8 +39,24 @@
 
   <!-- Front -->
   <div id="customers-front">
-    <div *ngFor="let c of agentsQueue; index as i" class="customer-box">
-      <span class="font-3em">{{i + 1}}</span><br/> No: {{c.agentId}}
+    <div *ngFor="let item of agentsQueue" class="customer-box">
+      <img src="../../../../assets/person_icon.svg" alt="Person">
+      <div class="customer-info">
+        <table class="table-sm">
+          <tr>
+            <th>Agent</th>
+            <th>#{{item.agentId}}</th>
+          </tr>
+          <tr>
+            <td>Arrival</td>
+            <td>{{item.arrival.getHours()}}:{{item.arrival.getMinutes()}}:{{item.arrival.getSeconds()}}</td>
+          </tr>
+          <tr>
+            <td>Waiting</td>
+            <td>{{(item.waitingTime / 1000) | number}}s</td>
+          </tr>
+        </table>
+      </div>
     </div>
   </div>
 
@@ -87,8 +103,14 @@
         <td>{{allAgents.maxDelayTime() / 1000 | number}}</td>
       </tr>
     </table>
-  </div>
 
+    <!-- Histograms -->
+    <div id="histogram">
+      <plotly-plot [data]="arrivalsHist.data" [layout]="arrivalsHist.layout"></plotly-plot>
+      <plotly-plot [data]="delayHist.data" [layout]="delayHist.layout"></plotly-plot>
+      <plotly-plot [data]="waitingHist.data" [layout]="waitingHist.layout"></plotly-plot>
+    </div>
+  </div>
 
 
   <!-- Poslednych 5 zaznamov

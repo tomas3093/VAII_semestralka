@@ -4,6 +4,7 @@ import {Constants} from "../Constants";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {AlertService} from "../../../_services";
 import {MeasurementService} from "../../../_services/measurement.service";
+import {MyLib} from "../MyLib";
 
 @Component({
   selector: 'app-new-measurement-form',
@@ -82,11 +83,7 @@ export class NewMeasurementFormComponent implements OnInit {
    */
   onSubmit() {
 
-    let m: Measurement = new Measurement();
-    m.name = "My meeeeasr";
-    this.messageEvent.emit(m);
-
-    /*this.submitted = true;
+    this.submitted = true;
 
     // stop here if form is invalid
     if (this.measurementForm.invalid) {
@@ -107,13 +104,15 @@ export class NewMeasurementFormComponent implements OnInit {
         data => {
           this.alertService.success('Measurement created');
 
-          this.measurementOpen = true; Sem pojde emit vytvoreneho merania
+          // Sem pojde emit vytvoreneho merania, ktore prislo ako response
+          this.measurement = <Measurement>data;
+          this.messageEvent.emit(this.measurement);
         },
         error => {
           this.alertService.error("Error during creation of measurement");
           this.loading = false;
           console.log(JSON.stringify(error));
-        });*/
+        });
   }
 
 }

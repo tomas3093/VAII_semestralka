@@ -92,7 +92,7 @@ export class ProfileEditorComponent implements OnInit {
       .subscribe(
         data => {
           this.alertService.success('Profile information successfully updated', true);
-          this.router.navigate([Constants.ROUTE_IDENTIFIER_DASHBOARD]);
+          this.router.navigate([this.constants.ROUTE_IDENTIFIER_ROOT]);
         },
         error => {
           this.alertService.error("Error during update");

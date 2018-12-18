@@ -10,14 +10,11 @@ import {AccountDeleterComponent} from "./_components/_user/account-deleter";
 import {AgentTypeFormComponent} from "./_components/_core/agent-type-form";
 import {Constants} from "./_components/_core/Constants";
 import {MeasurementDetailComponent} from "./_components/_core/measurement-detail";
-import {PageNotFoundComponent} from "./_components/_core/page-not-found/page-not-found.component";
+import {PageNotFoundComponent} from "./_components/_core/page-not-found";
 import {MeasurementMakerComponent} from "./_components/_core/measurement-maker";
 
 const appRoutes: Routes = [
     { path: Constants.ROUTE_IDENTIFIER_ROOT,
-      component: DashboardComponent, canActivate: [AuthGuard]
-    },
-    { path: Constants.ROUTE_IDENTIFIER_DASHBOARD,
       component: DashboardComponent, canActivate: [AuthGuard]
     },
     { path: `${Constants.ROUTE_IDENTIFIER_MEASUREMENT_DETAIL}/:id`,

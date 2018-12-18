@@ -4,7 +4,6 @@ import {Constants} from "../Constants";
 import {MeasurementService} from "../../../_services/measurement.service";
 import {Router} from "@angular/router";
 import {AlertService} from "../../../_services";
-import {statsErrorsToString} from "@angular-devkit/build-angular/src/angular-cli-files/utilities/stats";
 
 @Component({
   selector: 'app-measurement-maker',
@@ -23,6 +22,20 @@ export class MeasurementMakerComponent implements OnInit {
   elapsedTimeLabel: string;
   statsEnabled: boolean;
   constants: Constants;
+
+  // Plotly.js graphs
+  arrivalsHist = {
+    data: [{ x: [], type: 'histogram' }],
+    layout: {width: 540, height: 350, title: 'Histogram of agent interarrival times [s]'}
+  };
+  delayHist = {
+    data: [{ x: [], type: 'histogram' }],
+    layout: {width: 540, height: 350, title: 'Histogram of agent delay times [s]'}
+  };
+  waitingHist = {
+    data: [{ x: [], type: 'histogram' }],
+    layout: {width: 540, height: 350, title: 'Histogram of agent waiting times [s]'}
+  };
 
   constructor(private router: Router,
               private measurementService: MeasurementService,
@@ -48,6 +61,7 @@ export class MeasurementMakerComponent implements OnInit {
   receiveMessage($event: Measurement) {
     this.measurementStarted = true;
     this.measurement = $event;
+    setInterval(this.updateTime, 1000);   // spustenie pocitadla uplynuteho casu
   }
 
 
@@ -55,7 +69,8 @@ export class MeasurementMakerComponent implements OnInit {
    * Kliknutie na tlacidlo save. Ulozi vsetkych nameranych agentov do daneho merania.
    */
   onSave() {
-    // TODO
+    this.alertService.success("Measurement has been saved", true);
+    this.router.navigate([this.constants.ROUTE_IDENTIFIER_ROOT]);
   }
 
 
@@ -71,14 +86,25 @@ export class MeasurementMakerComponent implements OnInit {
    * Pridanie noveho agenta do systemu
    */
   newAgentArrivalFunction() {
+
+    // Vytvorenie a inicializovanie agenta
     let agent = new Agent();
+    agent.agentId = this.allAgents.length() + 1;
     agent.arrival = new Date();
     agent.measurementId = this.measurement.measurementId;
     this.allAgents.add(agent);
 
+    // pridanie casu medzi prichodmi do histogramu prichodov (+ prevod na sekundy)
+    if (this.allAgents.length() >= 2) {
+      this.arrivalsHist.data[0].x.push(this.allAgents.getLastInterarrivalTime() / 1000);
+    }
+
     // Ak je front prazdny
     if (this.agentsQueue.length === 0) {
       agent.waitingTime = 0;
+
+      // Pridanie casu cakania do histogramu
+      this.waitingHist.data[0].x.push(0);
     }
     this.agentsQueue.push(agent);
 
@@ -91,20 +117,42 @@ export class MeasurementMakerComponent implements OnInit {
    */
   endOfAgentDelayFunction() {
 
-    // Ak existuju nejaky zakaznici
+    // Ak existuju nejaky agenti
     if (this.agentsQueue.length > 0) {
 
-      // Vyhodi z frontu zakaznika ktory bol prave obsluzeny
+      // Vyhodi z frontu agenta ktory bol prave obsluzeny
       let sinkedAgent: Agent = this.agentsQueue.shift();
-      sinkedAgent.delayTime = Date.now() - (sinkedAgent.arrival.getTime() + sinkedAgent.waitingTime);
 
-      // Ak caka v rade dalsi zakaznik
-      if (this.agentsQueue.length > 0) {
-        let firstInQueue: Agent = this.agentsQueue[0];
-        firstInQueue.waitingTime = Date.now() - firstInQueue.arrival.getTime();
-      }
+      // Vypocet casu obsluhy
+      let delayTime: number = Date.now() - (sinkedAgent.arrival.getTime() + sinkedAgent.waitingTime);
+      sinkedAgent.delayTime = delayTime;
+      this.delayHist.data[0].x.push(delayTime);
 
-      this.logQueueLength();
+      // Ulozi agenta do databazy
+      this.measurementService.createMeasurementAgent(this.measurement.measurementId, sinkedAgent)
+        .subscribe(
+          data => {
+
+            // Ak caka v rade dalsi agent
+            if (this.agentsQueue.length > 0) {
+              let firstInQueue: Agent = this.agentsQueue[0];
+
+              // Vypocet casu cakania
+              let waitingTime: number = Date.now() - firstInQueue.arrival.getTime();
+              firstInQueue.waitingTime = waitingTime;
+
+              // Pridanie casu cakania do histogramu
+              this.waitingHist.data[0].x.push(waitingTime);
+            }
+
+            this.logQueueLength();
+
+          },
+          error => {
+            this.alertService.error("Error during database connection");
+            console.log(error);
+          }
+        );
     }
   }
 
@@ -125,19 +173,21 @@ export class MeasurementMakerComponent implements OnInit {
    * Funkcia na aktualizovanie casu, ktory uplynul od zaciatku simulacie
    */
   updateTime() {
-    let dateDiff: Date = new Date(new Date().getTime() - this.measurement.startTime);
-    let seconds: number = dateDiff.getSeconds();
-    let minutes: number = dateDiff.getMinutes();
-    let hours: number = dateDiff.getHours() - 1;
-    let days: number = dateDiff.getDate() - 1;
+    if(this.measurementStarted) {
+      let dateDiff: Date = new Date(new Date().getTime() - this.measurement.startTime);
+      let seconds: number = dateDiff.getSeconds();
+      let minutes: number = dateDiff.getMinutes();
+      let hours: number = dateDiff.getHours() - 1;
+      let days: number = dateDiff.getDate() - 1;
 
-    if(days > 0) {
-      this.elapsedTimeLabel = days + " days, " + hours + ":" + minutes + ":" + seconds;
-    } else {
-      if (hours > 0)
-        this.elapsedTimeLabel = hours + ":" + minutes + ":" + seconds;
-      else
-        this.elapsedTimeLabel = minutes + ":" + seconds;
+      if(days > 0) {
+        this.elapsedTimeLabel = days + " days, " + hours + ":" + minutes + ":" + seconds;
+      } else {
+        if (hours > 0)
+          this.elapsedTimeLabel = hours + ":" + minutes + ":" + seconds;
+        else
+          this.elapsedTimeLabel = minutes + ":" + seconds;
+      }
     }
   }
 

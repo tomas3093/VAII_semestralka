@@ -19,6 +19,7 @@ import { MeasurementDetailComponent } from './_components/_core/measurement-deta
 import { PageNotFoundComponent } from './_components/_core/page-not-found';
 import { MeasurementMakerComponent } from './_components/_core/measurement-maker';
 import { NewMeasurementFormComponent } from './_components/_core/new-measurement-form';
+import { PlotlyModule } from 'angular-plotly.js';
 
 @NgModule({
     imports: [
@@ -26,6 +27,7 @@ import { NewMeasurementFormComponent } from './_components/_core/new-measurement
         ReactiveFormsModule,
         HttpClientModule,
         FormsModule,
+        PlotlyModule,
         routing
     ],
     declarations: [

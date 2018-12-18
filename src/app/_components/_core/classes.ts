@@ -12,6 +12,7 @@ export class QueueLengthListItem {
 
 /**
  * Struktura ktora pocita statistiky o agentoch
+ * Vsetky casy vracia v milisekundach
  */
 export class AgentStatistics {
   private agents: Agent[];
@@ -26,6 +27,17 @@ export class AgentStatistics {
 
   length(): number {
     return this.agents.length;
+  }
+
+  getLastInterarrivalTime(): number {
+    if (this.agents.length < 2) {
+      return Constants.COLLECTOR_STATISTICS_UNDEFINED_VAL;
+    }
+
+    let predposledny: number = this.agents[this.agents.length - 2].arrival.getTime();
+    let posledny: number = this.agents[this.agents.length - 1].arrival.getTime();
+
+    return (posledny - predposledny);
   }
 
   minWaitingTime(): number {

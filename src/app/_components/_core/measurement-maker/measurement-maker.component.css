@@ -15,6 +15,33 @@
   width: 50%;
 }
 
+#customers-front {
+  min-height: 200px;
+  max-width: 540px;
+}
+
+.customer-box {
+  position: relative;
+  display: inline-flex;
+}
+
+.customer-box .customer-info {
+  visibility: hidden;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  font-size: 80%;
+  border-radius: 6px;
+  padding: 5px 0;
+
+  position: absolute;
+  z-index: 1;
+}
+
+.customer-box:hover .customer-info {
+  visibility: visible;
+}
+
 #btn-stats {
   width: 100%;
   margin-top: 5px;
@@ -25,6 +52,6 @@
   width: 100%;
 }
 
-#customers-front {
-  min-height: 200px;
+#stats-box {
+  margin-top: 10px;
 }
