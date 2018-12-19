@@ -34,8 +34,8 @@ export class AgentStatistics {
       return Constants.COLLECTOR_STATISTICS_UNDEFINED_VAL;
     }
 
-    let predposledny: number = this.agents[this.agents.length - 2].arrival.getTime();
-    let posledny: number = this.agents[this.agents.length - 1].arrival.getTime();
+    let predposledny: number = this.agents[this.agents.length - 2].arrival;
+    let posledny: number = this.agents[this.agents.length - 1].arrival;
 
     return (posledny - predposledny);
   }
@@ -74,11 +74,15 @@ export class AgentStatistics {
     }
 
     let sum: number = 0;
+    let count: number = 0;
     for(let i = 0; i < this.agents.length; i++) {
-      sum += this.agents[i].waitingTime;
+      if(this.agents[i].waitingTime) {
+        sum += this.agents[i].waitingTime;
+        count++;
+      }
     }
 
-    return sum / this.agents.length;
+    return sum / count;
   }
 
   minDelayTime(): number {
@@ -115,10 +119,14 @@ export class AgentStatistics {
     }
 
     let sum: number = 0;
+    let count: number = 0;
     for(let i = 0; i < this.agents.length; i++) {
-      sum += this.agents[i].delayTime;
+      if(this.agents[i].delayTime) {
+        sum += this.agents[i].delayTime;
+        count++;
+      }
     }
 
-    return sum / this.agents.length;
+    return sum / count;
   }
 }

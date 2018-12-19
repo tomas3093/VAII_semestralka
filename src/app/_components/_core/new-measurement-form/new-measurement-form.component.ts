@@ -104,9 +104,13 @@ export class NewMeasurementFormComponent implements OnInit {
         data => {
           this.alertService.success('Measurement created');
 
-          // Sem pojde emit vytvoreneho merania, ktore prislo ako response
-          this.measurement = <Measurement>data;
-          this.messageEvent.emit(this.measurement);
+          // Emit vytvoreneho merania s ID ktore bolo vytvorene v DB
+          if(data.hasOwnProperty("measurementId")) {
+            this.measurement.measurementId = (data as Measurement).measurementId;
+            this.messageEvent.emit(this.measurement);
+          } else {
+            this.alertService.error("Error during creation of measurement");
+          }
         },
         error => {
           this.alertService.error("Error during creation of measurement");

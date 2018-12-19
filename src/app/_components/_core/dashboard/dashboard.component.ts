@@ -43,6 +43,14 @@ export class DashboardComponent implements OnInit {
             .subscribe(
               data => {
                 this.measurements = data;
+
+                // Parsovanie datumov (ISO to timestamp)
+                for (let i = 0; i< this.measurements.length; i++) {
+                  this.measurements[i].startTime = Date.parse('' + this.measurements[i].startTime);
+                  if (this.measurements[i].stopTime) {
+                    this.measurements[i].stopTime = Date.parse('' + this.measurements[i].stopTime);
+                  }
+                }
               },
               error => {
                 console.log(JSON.stringify(error));

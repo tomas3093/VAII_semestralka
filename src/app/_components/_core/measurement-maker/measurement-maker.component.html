@@ -16,11 +16,13 @@
         Save
       </button>
       <button type="button" class="btn btn-info btn-secondary"
-              title="Reset current measurement">
+              title="Reset current measurement"
+              (click)="onReset()">
         <i class="fas fa-redo-alt"></i>
       </button>
       <button type="button" class="btn btn-danger btn-secondary"
-              title="Delete current measurement">
+              title="Delete current measurement"
+              (click)="onDelete()">
         <i class="fas fa-skull-crossbones"></i>
       </button>
     </div>
@@ -49,7 +51,7 @@
           </tr>
           <tr>
             <td>Arrival</td>
-            <td>{{item.arrival.getHours()}}:{{item.arrival.getMinutes()}}:{{item.arrival.getSeconds()}}</td>
+            <td>{{item.ArrivalDate | date:"h:mm:ss"}}</td>
           </tr>
           <tr>
             <td>Waiting</td>
@@ -111,27 +113,5 @@
       <plotly-plot [data]="waitingHist.data" [layout]="waitingHist.layout"></plotly-plot>
     </div>
   </div>
-
-
-  <!-- Poslednych 5 zaznamov
-  <div id="recent-arrivals" [hidden]="arrivals.size() === 0">
-    <table class="table">
-      <thead>
-      <tr>
-        <th>ID</th>
-        <th>SYSTEM TIME [s]</th>
-        <th>UTC TIME</th>
-      </tr>
-      </thead>
-
-      <tbody>
-      <tr *ngFor="let arrival of arrivals.lastN(5); index as i">
-        <td>{{i + 1}}</td>
-        <td>{{arrival / 1000 | number}}</td>
-        <td>--</td>
-      </tr>
-      </tbody>
-    </table>
-  </div>-->
 
 </div>

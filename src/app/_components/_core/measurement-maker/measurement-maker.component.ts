@@ -43,14 +43,9 @@ export class MeasurementMakerComponent implements OnInit {
 
     this.measurementStarted = false;
     this.measurement = new Measurement();
-
-    this.measurement.startTime = 0;
-    this.elapsedTimeLabel = "0:0";
-
-    this.allAgents = new AgentStatistics();
-    this.agentsQueue = [];
-    this.queueLengths = [];
     this.statsEnabled = false;
+
+    this.resetMeasurement();
 
     this.constants = new Constants();
   }
@@ -66,11 +61,117 @@ export class MeasurementMakerComponent implements OnInit {
 
 
   /**
-   * Kliknutie na tlacidlo save. Ulozi vsetkych nameranych agentov do daneho merania.
+   * Kliknutie na tlacidlo save. Vypise hlasku ze meranie ulozene a presmeruje na '/'
    */
   onSave() {
-    this.alertService.success("Measurement has been saved", true);
-    this.router.navigate([this.constants.ROUTE_IDENTIFIER_ROOT]);
+    this.measurementService.setMeasurementStopTime(this.measurement.measurementId)
+      .subscribe(
+        data => {
+          this.alertService.success("Measurement has been saved", true);
+          this.router.navigate(['/' + this.constants.ROUTE_IDENTIFIER_ROOT]);
+        },
+        error => {
+          console.log(JSON.stringify(error));
+        }
+      );
+  }
+
+
+  /**
+   * Reset merania
+   */
+  resetMeasurement() {
+    this.measurement.startTime = new Date().getTime();
+
+    this.elapsedTimeLabel = "0:0";
+
+    this.allAgents = new AgentStatistics();
+    this.agentsQueue = [];
+    this.queueLengths = [];
+
+    // histogramy
+    this.arrivalsHist.data[0].x = [];
+    this.delayHist.data[0].x = [];
+    this.waitingHist.data[0].x = [];
+
+    // Reset casu zaciatku
+    this.measurementService.setMeasurementStartTime(this.measurement.measurementId)
+      .subscribe(
+        data => {
+          // uspech
+        },
+        error => {
+          console.log(JSON.stringify(error));
+        }
+      );
+  }
+
+
+  /**
+   * Kliknutie na tlacidlo reset. Vymaze vsetkych nameranych agentov aktualneho merania
+   */
+  onReset() {
+
+    // Confirm dialog
+    if (confirm('Are you sure you want to reset this measurement?')) {
+
+      // Zmazanie agentov
+      this.measurementService.deleteMeasurementAgents(this.measurement.measurementId)
+        .subscribe(
+          data => {
+            this.alertService.success("Measurement has been resetted");
+
+            // Reset lokalnych premennych
+            this.resetMeasurement();
+
+          },
+          error => {
+            console.log(JSON.stringify(error));
+            this.alertService.error("Error during DB connection");
+          }
+        )
+
+    } else {
+      // Do nothing!
+    }
+  }
+
+
+  /**
+   * Kliknutie na tlacidlo delete. Vymaze vsetkych agentov a aj meranie samotne
+   */
+  onDelete() {
+
+    // Confirm dialog
+    if (confirm('Are you sure you want to permanently delete this measurement?')) {
+
+      // Vymazanie agentov
+      this.measurementService.deleteMeasurementAgents(this.measurement.measurementId)
+        .subscribe(
+          data => {
+
+            // Ak sa vymazali agenti, vymaz aj meranie samotne
+            this.measurementService.deleteMeasurement(this.measurement.measurementId)
+              .subscribe(
+                data => {
+                  this.alertService.success("Measurement has been deleted", true);
+                  this.router.navigate(['/' + this.constants.ROUTE_IDENTIFIER_ROOT]);
+                },
+                error => {
+                  console.log(JSON.stringify(error));
+                  this.alertService.error("Error during DB connection");
+                }
+              );
+          },
+          error => {
+            console.log(JSON.stringify(error));
+            this.alertService.error("Error during DB connection");
+          }
+        )
+
+    } else {
+      // Do nothing!
+    }
   }
 
 
@@ -90,7 +191,7 @@ export class MeasurementMakerComponent implements OnInit {
     // Vytvorenie a inicializovanie agenta
     let agent = new Agent();
     agent.agentId = this.allAgents.length() + 1;
-    agent.arrival = new Date();
+    agent.arrival = new Date().getTime();
     agent.measurementId = this.measurement.measurementId;
     this.allAgents.add(agent);
 
@@ -124,9 +225,12 @@ export class MeasurementMakerComponent implements OnInit {
       let sinkedAgent: Agent = this.agentsQueue.shift();
 
       // Vypocet casu obsluhy
-      let delayTime: number = Date.now() - (sinkedAgent.arrival.getTime() + sinkedAgent.waitingTime);
+      let delayTime: number = Date.now() - (sinkedAgent.arrival + sinkedAgent.waitingTime);
       sinkedAgent.delayTime = delayTime;
-      this.delayHist.data[0].x.push(delayTime);
+      this.delayHist.data[0].x.push(delayTime / 1000);
+
+      // Odstranenie agentId kvoli db validacii
+      sinkedAgent.agentId = null;
 
       // Ulozi agenta do databazy
       this.measurementService.createMeasurementAgent(this.measurement.measurementId, sinkedAgent)
@@ -138,11 +242,11 @@ export class MeasurementMakerComponent implements OnInit {
               let firstInQueue: Agent = this.agentsQueue[0];
 
               // Vypocet casu cakania
-              let waitingTime: number = Date.now() - firstInQueue.arrival.getTime();
+              let waitingTime: number = Date.now() - firstInQueue.arrival;
               firstInQueue.waitingTime = waitingTime;
 
               // Pridanie casu cakania do histogramu
-              this.waitingHist.data[0].x.push(waitingTime);
+              this.waitingHist.data[0].x.push(waitingTime / 1000);
             }
 
             this.logQueueLength();

@@ -16,14 +16,48 @@
     </tr>
     <tr>
       <td>Started</td>
-      <td>{{measurement.startTime}}</td>
+      <td>{{measurement.startTime | date:"medium" }}</td>
     </tr>
     <tr>
       <td>Stopped</td>
-      <td>{{measurement.stopTime}}</td>
+      <td>{{measurement.stopTime | date:"medium" }}</td>
+    </tr>
+  </table>
+  <br/>
+
+  <!-- Statistics of the measurement -->
+  <h2>Statistics</h2>
+  <table class="table table-striped">
+    <tr>
+      <td>Agents count:</td>
+      <td>{{allAgents.length()}}</td>
+    </tr>
+    <tr>
+      <td>Average delay time:</td>
+      <td>{{allAgents.avgDelayTime() / 1000 | number}}</td>
+    </tr>
+    <tr>
+      <td>Min delay time:</td>
+      <td>{{allAgents.minDelayTime() / 1000 | number}}</td>
+    </tr>
+    <tr>
+      <td>Max queue length:</td>
+      <td>{{-1}}</td>
+    </tr>
+    <tr>
+      <td>Average waiting time:</td>
+      <td>{{allAgents.avgWaitingTime() / 1000 | number}}</td>
+    </tr>
+    <tr>
+      <td>Max waiting time:</td>
+      <td>{{allAgents.maxWaitingTime() / 1000 | number}}</td>
+    </tr>
+    <tr>
+      <td>Max delay time:</td>
+      <td>{{allAgents.maxDelayTime() / 1000 | number}}</td>
     </tr>
   </table>
 
   <button class="btn btn-danger" (click)="deleteMeasurement()">Delete measurement</button>
-  <a [routerLink]="[constants.ROUTE_IDENTIFIER_ROOT]" class="btn btn-link">Cancel</a>
+  <a [routerLink]="['/' + constants.ROUTE_IDENTIFIER_ROOT]" class="btn btn-link">Cancel</a>
 </div>

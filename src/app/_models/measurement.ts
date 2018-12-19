@@ -8,4 +8,7 @@ export class Measurement {
   // FKs
   userId: number;
   agentTypeId: number;
+
+  get startTimeAsDate(): Date {return new Date(this.startTime)}
+  get stopTimeAsDate(): Date {return new Date(this.stopTime)}
 }

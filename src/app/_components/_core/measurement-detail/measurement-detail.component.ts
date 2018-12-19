@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {AgentType, Measurement} from "../../../_models";
+import {Agent, AgentStatistics, AgentType, Measurement} from "../../../_models";
 import {ActivatedRoute, Router} from "@angular/router";
 import {MeasurementService} from "../../../_services/measurement.service";
 import {Constants} from "../Constants";
@@ -13,6 +13,7 @@ export class MeasurementDetailComponent implements OnInit {
 
   measurement: Measurement;
   measurementAgentType: AgentType;
+  allAgents: AgentStatistics;
 
   constants: Constants;
 
@@ -24,16 +25,24 @@ export class MeasurementDetailComponent implements OnInit {
 
     this.measurement = new Measurement();
     this.measurementAgentType = new AgentType();
+    this.allAgents = new AgentStatistics();
+
     this.constants = new Constants();
   }
 
   ngOnInit() {
-    // Ziskanie id z URL parametra
+    // Ziskanie id merania z URL parametra
     let id = this.route.snapshot.params['id'];
     this.measurementService.getMeasurementById(id)
       .subscribe(
         data => {
           this.measurement = data;
+
+          // Parsovanie datumov
+          this.measurement.startTime = Date.parse('' + this.measurement.startTime);
+          if (this.measurement.stopTime) {
+            this.measurement.stopTime = Date.parse('' + this.measurement.stopTime);
+          }
 
           // Ziskanie agent typu
           if (this.measurement.agentTypeId) {
@@ -41,16 +50,31 @@ export class MeasurementDetailComponent implements OnInit {
               .subscribe(
                 data => {
                   this.measurementAgentType = data;
+
+                  // Ziskanie vsetkych agentov merania
+                  this.measurementService.getMeasurementAgents(this.measurement.measurementId)
+                    .subscribe(
+                      data => {
+
+                        let retrievedAgents: Agent[] = <Agent[]>data;
+                        for(let i = 0; i < retrievedAgents.length; i++) {
+                          this.allAgents.add(retrievedAgents[i]);
+                        }
+                      },
+                      error => {
+                        console.log(JSON.stringify(error));
+                      }
+                    )
                 },
                 error => {
-                  JSON.stringify(error);
+                  console.log(JSON.stringify(error));
                 }
               )
           }
         },
         error => {
           console.log(JSON.stringify(error));
-          this.router.navigate([this.constants.ROUTE_NOT_FOUND]);
+          this.router.navigate(['/' + this.constants.ROUTE_NOT_FOUND]);
         }
       )
   }

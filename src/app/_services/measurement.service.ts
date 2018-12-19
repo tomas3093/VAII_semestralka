@@ -49,6 +49,52 @@ export class MeasurementService {
 
 
   /**
+   * Nastavi stopTime na aktualny cas
+   * @param {number} measurementId
+   * @returns {Observable<Object>}
+   */
+  setMeasurementStopTime(measurementId: number) {
+    let values = {
+      stopTime: new Date().toISOString()
+    };
+
+    return this.http.patch(
+      `${environment.apiUrl}/Measurements/${measurementId}?${MyLib.getTokenString()}`,
+      values
+    );
+  }
+
+
+  /**
+   * Nastavi startTime na aktualny cas
+   * @param {number} measurementId
+   * @returns {Observable<Object>}
+   */
+  setMeasurementStartTime(measurementId: number) {
+    let values = {
+      startTime: new Date().toISOString()
+    };
+
+    return this.http.patch(
+      `${environment.apiUrl}/Measurements/${measurementId}?${MyLib.getTokenString()}`,
+      values
+    );
+  }
+
+
+  /**
+   * Vrati vsetkych nameranych agentov v danom merani
+   * @param {number} measurementId
+   * @returns {Observable<Object>}
+   */
+  getMeasurementAgents(measurementId: number) {
+    return this.http.get(
+      `${environment.apiUrl}/Measurements/${measurementId}/agents?${MyLib.getTokenString()}`
+    );
+  }
+
+
+  /**
    * Odstrani dane meranie
    * @param {number} measurementId
    * @returns {Observable<Object>}
